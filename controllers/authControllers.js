@@ -17,7 +17,7 @@ const sendCookie = (token, res) => {
     const options = {
         maxAge : process.env.LOGIN_EXPIRES,
         httpOnly: true,
-        sameSite: 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
 
     if(process.env.NODE_ENV == 'production'){
