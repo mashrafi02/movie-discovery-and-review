@@ -15,15 +15,11 @@ exports.signToken = (id) => {
 
 const sendCookie = (token, res) => {
     const options = {
-        maxAge : process.env.LOGIN_EXPIRES,
+        maxAge : parseInt(process.env.LOGIN_EXPIRES) || 72 * 60 * 60 * 1000,
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
-
-    if(process.env.NODE_ENV == 'production'){
-        options.secure = true
-    }
-
     res.cookie('jwt', token, options)
 }
 

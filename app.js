@@ -27,7 +27,20 @@ app.use('/avatars', express.static(path.join(__dirname, 'avatars')));
 
 
 app.use(helmet());
-app.use(cors({ origin: [process.env.CLIENT_URL, process.env.CLIENT_URL_VERCEL], credentials: true }));
+// app.use(cors({ origin: [process.env.CLIENT_URL, process.env.CLIENT_URL_VERCEL], credentials: true }));
+const allowedOrigins = [process.env.CLIENT_URL, process.env.CLIENT_URL_VERCEL];
+
+app.use(cors({
+              origin: function(origin, callback) {
+                if (!origin || allowedOrigins.includes(origin)) {
+                  callback(null, true);
+                } else {
+                  callback(new Error("Not allowed by CORS"));
+                }
+              },
+              credentials: true
+            }));
+
 app.use(express.json({limit:'10kb'}));
 app.use(cookieParser());
 // app.use(mongoSanitize());
