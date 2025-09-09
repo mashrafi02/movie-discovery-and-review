@@ -98,25 +98,41 @@ exports.login = asyncErrorHandler( async (req, res, next) => {
 })
 
 
-exports.logout = asyncErrorHandler( async (req, res, next) => {
-    // Clear the JWT cookie
-    const options = {
-        maxAge: 10 * 1000,
-        httpOnly: true,
-    }
+// exports.logout = asyncErrorHandler( async (req, res, next) => {
+//     // Clear the JWT cookie
+//     const options = {
+//         maxAge: 10 * 1000,
+//         httpOnly: true,
+//     }
 
-    if(process.env.NODE_ENV == 'production'){
-        options.secure = true,
-        options.sameSite = 'Strict'
-    }
+//     if(process.env.NODE_ENV == 'production'){
+//         options.secure = true,
+//         options.sameSite = 'Strict'
+//     }
 
-    res.cookie('jwt', 'loggedout', options);
+//     res.cookie('jwt', 'loggedout', options);
 
-    res.status(200).json({
-        status: 'success',
-        message: 'You have been logged out!'
+//     res.status(200).json({
+//         status: 'success',
+//         message: 'You have been logged out!'
+//     });
+// });
+
+
+exports.logout = asyncErrorHandler(async (req, res, next) => {
+    res.cookie("jwt", "", {
+      maxAge: 0, // expire immediately
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
-});
+  
+    res.status(200).json({
+      status: "success",
+      message: "You have been logged out!",
+    });
+  });
+  
 
 
 exports.forgotPassword = asyncErrorHandler( async (req,res,next) => {
