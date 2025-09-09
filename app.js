@@ -27,7 +27,7 @@ app.use('/avatars', express.static(path.join(__dirname, 'avatars')));
 
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: [process.env.CLIENT_URL, process.env.CLIENT_URL_VERCEL], credentials: true }));
 app.use(express.json({limit:'10kb'}));
 app.use(cookieParser());
 // app.use(mongoSanitize());
