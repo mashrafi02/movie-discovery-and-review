@@ -32,7 +32,6 @@ const userSchema = mongoose.Schema({
     },
     avatar : {
         type : String,
-        default : 'default_avatar.png'
     },
     age: {
         type: Number,
